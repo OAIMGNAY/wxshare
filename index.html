@@ -1,0 +1,43 @@
+<script>    
+url = location.href.split('#')[0];  
+console.log(url);
+url = encodeURIComponent(url);    
+  $.ajax({    
+    type : "get",    
+    url : "http://xxxxx.com/jssdk.php?url="+url,//替换网址，xxx根据自己jssdk文件位置修改    
+    dataType : "jsonp",    
+    jsonp: "callback",    
+    jsonpCallback:"success_jsonpCallback",    
+    success : function(data){    
+        wx.config({   
+        debug:false,   
+        appId: data.appId,    
+        timestamp: data.timestamp,    
+        nonceStr: data.nonceStr,    
+        signature: data.signature,    
+        jsApiList: [    
+               "onMenuShareTimeline", //分享给好友    
+               "onMenuShareAppMessage", //分享到朋友圈    
+               "onMenuShareQQ",  //分享到QQ    
+               "onMenuShareWeibo" //分享到微博    
+        ]    
+      });    
+},    
+                error:function(data){    
+                    alert("连接失败！");    
+                }    
+});    
+  wx.ready(function (){    
+  var shareData = {    
+    title: '全景漫游',    
+    desc: '带你全方位走览',
+    link: window.location.href,    
+    imgUrl: 'logo.png'    
+  };    
+  wx.onMenuShareAppMessage(shareData);    
+  wx.onMenuShareTimeline(shareData);    
+  wx.onMenuShareQQ(shareData);    
+  wx.onMenuShareWeibo(shareData);    
+    });    
+</script>   
+</html>
